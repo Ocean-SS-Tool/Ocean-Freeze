@@ -12,7 +12,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import ac.ocean.OceanPlugin;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConfigGUI implements Listener {
 
@@ -154,18 +155,16 @@ public class ConfigGUI implements Listener {
             return;
         }
 
-        Player player = (Player) event.getWhoClicked();
-        if (!player.hasPermission("ocean.admin")) {
-            return;
-        }
-
         event.setCancelled(true);
 
+        Player player = (Player) event.getWhoClicked();
         ItemStack clicked = event.getCurrentItem();
 
         if (clicked == null || !clicked.hasItemMeta()) {
             return;
         }
+
+        String displayName = clicked.getItemMeta().getDisplayName();
 
         switch (event.getSlot()) {
             case 10:
@@ -265,7 +264,13 @@ public class ConfigGUI implements Listener {
 
         if (meta != null) {
             meta.setDisplayName(name);
-            meta.setLore(Arrays.asList(lore));
+
+            List<String> loreList = new ArrayList<>();
+            for (String line : lore) {
+                loreList.add(line);
+            }
+            meta.setLore(loreList);
+
             item.setItemMeta(meta);
         }
 
