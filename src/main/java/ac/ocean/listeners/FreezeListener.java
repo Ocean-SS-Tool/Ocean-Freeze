@@ -12,6 +12,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.*;
 import ac.ocean.OceanPlugin;
 import ac.ocean.gui.FreezeGUI;
@@ -200,6 +201,17 @@ public class FreezeListener implements Listener {
                     event.getCause() != PlayerTeleportEvent.TeleportCause.COMMAND) {
                 event.setCancelled(true);
             }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerSneak(PlayerToggleSneakEvent event) {
+        if (!event.isSneaking()) {
+            return;
+        }
+
+        if (plugin.getFreezeManager().isFrozen(event.getPlayer())) {
+            event.setCancelled(true);
         }
     }
 
