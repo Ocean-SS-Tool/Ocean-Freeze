@@ -67,13 +67,13 @@ public class ConfigGUI implements Listener {
                 "§eClick to toggle!"
         ));
 
-        boolean ramDump = plugin.getConfig().getBoolean("anticheat.ram-dump", false);
+        boolean Ruin = plugin.getConfig().getBoolean("anticheat.Ruin", false);
         gui.setItem(16, createItem(
-                ramDump ? Material.GOLD_BLOCK : Material.IRON_BLOCK,
-                "§e§lRAM Dump Analysis",
-                "§7Status: " + (ramDump ? "§aEnabled" : "§cDisabled"),
+                Ruin ? Material.GOLD_BLOCK : Material.IRON_BLOCK,
+                "§e§lRuin Mode Analysis",
+                "§7Status: " + (Ruin ? "§aEnabled" : "§cDisabled"),
                 "",
-                "§7Enables RAM dump analysis",
+                "§7Enables RUIN Mode analysis",
                 "§7in Ocean scans",
                 "",
                 "§eClick to toggle!"
@@ -185,7 +185,7 @@ public class ConfigGUI implements Listener {
                 break;
 
             case 16:
-                toggleBoolean(player, "anticheat.ram-dump");
+                toggleBoolean(player, "anticheat.Ruin");
                 open(player);
                 break;
 
