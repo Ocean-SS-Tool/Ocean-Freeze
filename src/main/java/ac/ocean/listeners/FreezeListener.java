@@ -263,6 +263,12 @@ public class FreezeListener implements Listener {
             return;
         }
 
+        if (!plugin.getConfig().getBoolean("settings.Automatic-Freeze", true)) {
+            plugin.getFreezeManager().unfreezePlayer(player);
+            plugin.getFreezeGUI().cleanup(player.getUniqueId());
+            return;
+        }
+
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             plugin.getFreezeManager().reapplyFreeze(player);
 

@@ -1,13 +1,13 @@
 # ═════════════════ Ocean API Configuration ═════════════════
 anticheat:
   # Your Ocean API Key (Enterprise owner only)
-  api-key: "YOUR_API_KEY_HERE"
+  api-key: ""
 
   # Game type for scans (Java, Bedrock, FiveM, RedM, RageMP, AltV, Roblox, SanAndreas, Cod, Rust)
   game-type: "Java"
 
-  # Enable RAM dump analysis
-  ram-dump: false
+  # Enable RUIN dump analysis
+  RUIN: true
 
   # Make pins private (only visible to you)
   private-pins: false
@@ -35,6 +35,9 @@ settings:
   # Freeze Response GUI
   # When enabled, frozen players see a GUI with "Admit" and "Proceed" buttons
   freeze-gui-enabled: true
+
+  # Reapply the freeze when a frozen player rejoins the server
+  Automatic-Freeze: true
 
   # Command executed when a player admits to hacking (use %player% for player name)
   freeze-gui-admit-command: "ban %player% Admitted to using hacks"
