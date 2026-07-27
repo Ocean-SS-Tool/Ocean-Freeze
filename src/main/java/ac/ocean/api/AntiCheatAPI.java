@@ -61,7 +61,7 @@ public class AntiCheatAPI {
                 JsonObject requestBody = new JsonObject();
                 requestBody.addProperty("type", plugin.getConfig().getString("anticheat.game-type", "Java"));
                 requestBody.addProperty("pinName", "Freeze: " + target.getName() + " by " + staff.getName());
-                //requestBody.addProperty("RUIN", plugin.getConfig().getBoolean("anticheat.RUIN", false));
+                requestBody.addProperty("RUIN", plugin.getConfig().getBoolean("anticheat.RUIN", false));
                 requestBody.addProperty("private", plugin.getConfig().getBoolean("anticheat.private-pins", false));
 
                 try (OutputStream os = conn.getOutputStream()) {
@@ -145,7 +145,7 @@ public class AntiCheatAPI {
                 JsonObject requestBody = new JsonObject();
                 requestBody.addProperty("type", plugin.getConfig().getString("anticheat.game-type", "Java"));
                 requestBody.addProperty("pinName", "Freeze: " + target.getName() + " by " + staff.getName());
-                //requestBody.addProperty("RUIN", plugin.getConfig().getBoolean("anticheat.RUIN", false));
+                requestBody.addProperty("RUIN", plugin.getConfig().getBoolean("anticheat.RUIN", false));
                 requestBody.addProperty("private", plugin.getConfig().getBoolean("anticheat.private-pins", false));
 
                 try (OutputStream os = conn.getOutputStream()) {
