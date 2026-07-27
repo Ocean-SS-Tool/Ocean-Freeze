@@ -70,10 +70,10 @@ public class ConfigGUI implements Listener {
         boolean Ruin = plugin.getConfig().getBoolean("anticheat.Ruin", false);
         gui.setItem(16, createItem(
                 Ruin ? Material.GOLD_BLOCK : Material.IRON_BLOCK,
-                "§e§lRuin Dump Analysis",
+                "§e§lRuin Mode Analysis",
                 "§7Status: " + (Ruin ? "§aEnabled" : "§cDisabled"),
                 "",
-                "§7Enables RUIN dump analysis",
+                "§7Enables RUIN Mode analysis",
                 "§7in Ocean scans",
                 "",
                 "§eClick to toggle!"

@@ -1,7 +1,7 @@
 # ═════════════════ Ocean API Configuration ═════════════════
 anticheat:
   # Your Ocean API Key (Enterprise owner only)
-  api-key: ""
+  api-key: "YOUR_API_KEY_HERE"
 
   # Game type for scans (Java, Bedrock, FiveM, RedM, RageMP, AltV, Roblox, SanAndreas, Cod, Rust)
   game-type: "Java"
