@@ -25,6 +25,7 @@ public class FreezeListener implements Listener {
 
     private final OceanPlugin plugin;
     private Set<String> allowedCommands;
+    private Set<String> blockedCommands;
 
     public FreezeListener(OceanPlugin plugin) {
         this.plugin = plugin;
@@ -32,11 +33,17 @@ public class FreezeListener implements Listener {
     }
 
     public void reloadAllowedCommands() {
-        Set<String> cmds = new HashSet<>();
+        Set<String> whitelist = new HashSet<>();
         for (String cmd : plugin.getConfig().getStringList("settings.allowed-commands")) {
-            cmds.add("/" + cmd.toLowerCase());
+            whitelist.add("/" + cmd.toLowerCase());
         }
-        this.allowedCommands = cmds;
+        this.allowedCommands = whitelist;
+
+        Set<String> blacklist = new HashSet<>();
+        for (String cmd : plugin.getConfig().getStringList("settings.blacklist")) {
+            blacklist.add("/" + cmd.toLowerCase());
+        }
+        this.blockedCommands = blacklist;
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -156,7 +163,13 @@ public class FreezeListener implements Listener {
 
         String command = event.getMessage().split(" ")[0].toLowerCase();
 
-        if (!allowedCommands.contains(command)) {
+        boolean blacklistEnabled = plugin.getConfig().getBoolean("settings.blacklist-commands", true);
+
+        if (blacklistEnabled && blockedCommands.contains(command)) {
+            event.setCancelled(true);
+            player.sendMessage(colorize(plugin.getConfig().getString("settings.blacklist-message",
+                    "&cThis command is blacklisted you cannot use it while frozen!")));
+        } else if (!allowedCommands.contains(command)) {
             event.setCancelled(true);
             player.sendMessage(colorize(plugin.getMessageManager().getMessage("command-blocked",
                     "&cYou cannot use commands while frozen!")));

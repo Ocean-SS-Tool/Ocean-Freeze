@@ -82,6 +82,14 @@ settings:
     - "reply"
     - "r"
 
+  # Commands that frozen players CANNOT use (without /)
+  # These commands will be blocked even if in allowed-commands
+  blacklist-commands: true
+  blacklist-message: "&cThis command is blacklisted you cannot use it while frozen!"
+  blacklist:
+    - "plugman"
+    - "pl"
+
 # ══════════════════ Discord Webhook Configuration ══════════════════
 discord:
   # Discord webhook URL (set to "none" to disable)
