@@ -1,0 +1,43 @@
+name: Ocean
+version: ${project.version}
+main: ac.ocean.OceanPlugin
+author: Ocean Anticheat
+description: Freeze plugin with Ocean API integration
+softdepend: []
+
+commands:
+  ss:
+    description: Freeze a player for screenshare
+    usage: |
+      /<command> <player> - Freeze a player for screenshare
+      Example: /ss Player123
+    aliases: [freeze, froze]
+    permission: ocean.freeze
+  ocean:
+    description: Ocean plugin management
+    usage: |
+      /<command> scan <player> - Generate scan PIN and send instructions
+      /<command> lookup <discordId> - View user's scan history
+      /<command> riskscore <discordId> - Check user's risk analysis
+      /<command> db <discordId> - Query Cheater Database
+      /<command> ai <player|pin|discordId> - AI forensic verdict & analysis
+      /<command> ask <question> - Ask Ocean AI assistant
+      /<command> config - Open configuration GUI
+      /<command> mode <auto|manual> - Change freeze mode
+      /<command> reload - Reload plugin configuration
+      /<command> help - Show help menu
+    permission: ocean.admin
+
+permissions:
+  ocean.freeze:
+    description: Allows freezing players
+    default: op
+  ocean.freeze.bypass:
+    description: Bypass being frozen
+    default: false
+  ocean.staff:
+    description: Receive staff notifications
+    default: op
+  ocean.admin:
+    description: Access to Ocean admin commands
+    default: op
