@@ -15,6 +15,7 @@ anticheat:
   # Base URL for scan results (do not change unless you know what you're doing)
   results-base-url: "https://anticheat.ac/results/pin/"
 
+<<<<<<< HEAD
   # Server name sent as x-server-name header for usage logging (optional)
   server-name: ""
 
@@ -119,6 +120,8 @@ ai:
   # custom-headers:
   #   x-custom-header: "value"
 
+=======
+>>>>>>> d4ee759ab3c9a98c8bcb8a5702b71014977acb6a
 # ════════════════════ Plugin Settings ════════════════════
 settings:
   # Broadcast freeze actions to all staff members

@@ -6,6 +6,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+<<<<<<< HEAD
+=======
+/**
+ * Manager for Discord webhooks with elegant message formatting
+ */
+>>>>>>> d4ee759ab3c9a98c8bcb8a5702b71014977acb6a
 public class WebhookManager {
 
     private final OceanPlugin plugin;
