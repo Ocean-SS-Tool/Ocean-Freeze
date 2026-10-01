@@ -15,9 +15,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
+<<<<<<< HEAD
+=======
 /**
  * Elegant Discord Webhook implementation with full UTF-8 support
  */
+>>>>>>> d4ee759ab3c9a98c8bcb8a5702b71014977acb6a
 public class DiscordWebhook {
 
     private static final Logger LOGGER = Logger.getLogger("Ocean");

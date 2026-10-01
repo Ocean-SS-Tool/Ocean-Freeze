@@ -13,9 +13,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
+<<<<<<< HEAD
+=======
 /**
  * Elegant API client for Ocean User Lookup and Risk Score APIs
  */
+>>>>>>> d4ee759ab3c9a98c8bcb8a5702b71014977acb6a
 public class UserLookupAPI {
 
     private static final String BASE_URL = "https://api.anticheat.ac/v1";
