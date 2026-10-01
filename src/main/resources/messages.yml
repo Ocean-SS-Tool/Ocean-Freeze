@@ -128,17 +128,8 @@ usage-ss: "&cUsage: /%label% <player>"
 usage-scan: "&cUsage: /ocean scan <player>"
 usage-lookup: "&cUsage: /ocean lookup <discordId>"
 usage-riskscore: "&cUsage: /ocean riskscore <discordId>"
-<<<<<<< HEAD
-usage-database: "&cUsage: /ocean db <discordId>"
-usage-ai: "&cUsage: /ocean ai <player | pin | discordId>"
-usage-ask: "&cUsage: /ocean ask <your question>"
 retrieving-lookup: "&eRetrieving scan history for Discord ID: &f%discordid%"
 retrieving-riskscore: "&eAnalyzing risk score for Discord ID: &f%discordid%"
-retrieving-database: "&eSearching Cheater Database for Discord ID: &f%discordid%"
-=======
-retrieving-lookup: "&eRetrieving scan history for Discord ID: &f%discordid%"
-retrieving-riskscore: "&eAnalyzing risk score for Discord ID: &f%discordid%"
->>>>>>> d4ee759ab3c9a98c8bcb8a5702b71014977acb6a
 mode-current: "&eCurrent freeze mode: &f%mode%"
 mode-current-hint: "&7Use &e/ocean mode <AUTO|MANUAL> &7to change"
 mode-set: "&aFreeze mode set to: &e%mode%"
@@ -195,52 +186,12 @@ riskscore-cheats-title: "&c&lCheats Detected:"
 riskscore-not-found: "&cNo risk data found for this user."
 riskscore-footer: "&7&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-<<<<<<< HEAD
-# ═══ Cheater Database Messages ═══
-db-header: "&7&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-db-title: "&e&lCheater Database Results &7- &f%discordid%"
-db-no-records: "&a✔ No database records or detections found for this user (Clean)."
-db-invalid-discord-id: "&c✗ Invalid Discord ID! It must be between 5 and 25 digits."
-db-unauthorized: "&c✗ API key is missing, invalid, or expired!"
-db-forbidden: "&c✗ Access denied: API key lacks db:query permission or account does not have DB Access."
-db-rate-limited: "&c✗ Rate limit exceeded! Please slow down."
-db-profile-header: "&6&l[Community Profile] &f%username% &7(%displayname%)"
-db-confirmed-cheater: "  &c&l⚠ CONFIRMED CHEATER: &f%reason% &7(Caught by: %caughtby%)"
-db-not-confirmed-cheater: "  &aConfirmed Cheater: &fNo"
-db-profile-totals: "  &7Activity: &e%servers% &7servers | &e%messages% &7messages"
-db-network-header: "&9&l[External Network]"
-db-network-bans: "  &7Bans: %color%%active% Active &7/ &e%total% Total"
-db-network-blacklisted: "  &c&l⚠ BLACKLISTED ON NETWORK!"
-db-network-dangerous: "  &6⚠ Dangerous Discord Guilds: &e%count%"
-db-ocean-header: "&b&l[Ocean Scans]"
-db-ocean-status: "  &7Overall Status: %color%%status% &7| Scans: &e%scans% &7| Detections: &c%detections%"
-db-ocean-detections-title: "  &c&lDetections:"
-db-scan-matches: "&b&l[Scan Matches]: &e%count% match(es)"
-db-footer: "&7&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-
-# ═══ AI Assistant Messages ═══
-ai-header: "&7&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-ai-footer: "&7&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-ai-thinking: "&7[AI] &eConsulting AI assistant, please wait..."
-ai-analyzing-scan: "&7[AI] &eGenerating forensic AI analysis for &f%player% &7(PIN: &e%pin%&7)..."
-ai-analyzing-user: "&7[AI] &eInvestigating Discord ID &f%discordid% &ewith AI intelligence..."
-ai-not-configured: "&c✗ AI integration is not configured! Please set 'ai.api-key' in config.yml."
-ai-error: "&c[AI Error]: &f%error%"
-
-=======
->>>>>>> d4ee759ab3c9a98c8bcb8a5702b71014977acb6a
 # ═══ Command Help ═══
 help-header: "&7&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 help-title: "&e&lOcean Plugin"
 help-scan: "&e/ocean scan <player> &7- Start screenshare scan"
 help-lookup: "&e/ocean lookup <discordId> &7- View user scan history"
 help-riskscore: "&e/ocean riskscore <discordId> &7- Check user risk analysis"
-<<<<<<< HEAD
-help-database: "&e/ocean db <discordId> &7- Query Cheater Database"
-help-ai: "&e/ocean ai <player|pin|discordId> &7- AI screenshare verdict & analysis"
-help-ask: "&e/ocean ask <question> &7- Ask Ocean AI assistant"
-=======
->>>>>>> d4ee759ab3c9a98c8bcb8a5702b71014977acb6a
 help-config: "&e/ocean config &7- Open configuration GUI"
 help-mode: "&e/ocean mode [AUTO|MANUAL] &7- Change freeze mode"
 help-reload: "&e/ocean reload &7- Reload configuration"
