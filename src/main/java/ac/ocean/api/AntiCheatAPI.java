@@ -561,13 +561,9 @@ public class AntiCheatAPI {
                                             .replace("%result%", result)));
                                 }
                             }
-<<<<<<< HEAD
-
                             if (plugin.getConfig().getBoolean("ai.auto-analyze-scans", true) && plugin.getAIManager().isConfigured()) {
                                 plugin.getAIManager().analyzeScan(null, pin, targetName, resultsJson);
                             }
-=======
->>>>>>> d4ee759ab3c9a98c8bcb8a5702b71014977acb6a
                         } catch (Exception e) {
                             plugin.getLogger().warning("[Scan] Error sending scan results to staff: " + e.getMessage());
                         }
