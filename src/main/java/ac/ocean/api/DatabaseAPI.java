@@ -2,7 +2,6 @@ package ac.ocean.api;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -108,7 +107,6 @@ public class DatabaseAPI {
 
     private void displayDatabaseQuery(CommandSender sender, JsonObject data, String requestedDiscordId) {
         String discordId = data.has("discordId") ? data.get("discordId").getAsString() : requestedDiscordId;
-        boolean botConfigured = !data.has("botConfigured") || data.get("botConfigured").getAsBoolean();
 
         JsonObject botProfile = (data.has("botProfile") && !data.get("botProfile").isJsonNull()) ? data.getAsJsonObject("botProfile") : null;
         JsonObject networkLookup = (data.has("networkLookup") && !data.get("networkLookup").isJsonNull()) ? data.getAsJsonObject("networkLookup") : null;

@@ -6,6 +6,7 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
+@SuppressWarnings("deprecation")
 public class ClickableMessage {
 
     public static void send(Player player, String prefix, String clickText, String hoverText, String command) {

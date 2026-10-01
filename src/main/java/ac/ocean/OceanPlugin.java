@@ -1,6 +1,5 @@
 package ac.ocean;
 
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import ac.ocean.commands.FreezeCommand;
 import ac.ocean.commands.OceanCommand;
