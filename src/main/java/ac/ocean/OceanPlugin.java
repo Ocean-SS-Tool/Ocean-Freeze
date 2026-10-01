@@ -9,11 +9,6 @@ import ac.ocean.listeners.FreezeListener;
 import ac.ocean.manager.FreezeManager;
 import ac.ocean.api.AntiCheatAPI;
 import ac.ocean.api.UserLookupAPI;
-<<<<<<< HEAD
-import ac.ocean.api.DatabaseAPI;
-import ac.ocean.ai.AIManager;
-=======
->>>>>>> d4ee759ab3c9a98c8bcb8a5702b71014977acb6a
 import ac.ocean.gui.ConfigGUI;
 import ac.ocean.gui.FreezeGUI;
 import ac.ocean.manager.MessageManager;
@@ -25,11 +20,6 @@ public class OceanPlugin extends JavaPlugin {
     private MessageManager messageManager;
     private AntiCheatAPI antiCheatAPI;
     private UserLookupAPI userLookupAPI;
-<<<<<<< HEAD
-    private DatabaseAPI databaseAPI;
-    private AIManager aiManager;
-=======
->>>>>>> d4ee759ab3c9a98c8bcb8a5702b71014977acb6a
     private WebhookManager webhookManager;
     private FreezeListener freezeListener;
     private FreezeGUI freezeGUI;
@@ -46,11 +36,6 @@ public class OceanPlugin extends JavaPlugin {
         freezeManager = new FreezeManager(this);
         antiCheatAPI = new AntiCheatAPI(this);
         userLookupAPI = new UserLookupAPI(this);
-<<<<<<< HEAD
-        databaseAPI = new DatabaseAPI(this);
-        aiManager = new AIManager(this);
-=======
->>>>>>> d4ee759ab3c9a98c8bcb8a5702b71014977acb6a
         webhookManager = new WebhookManager(this);
 
         FreezeCommand freezeCommand = new FreezeCommand(this);
@@ -91,10 +76,6 @@ public class OceanPlugin extends JavaPlugin {
         boolean apiConfigured = !apiKey.equals("YOUR_API_KEY_HERE") && !apiKey.isEmpty();
         String webhookUrl = getConfig().getString("discord.webhook-url", "none");
         boolean webhookConfigured = !webhookUrl.equals("none") && !webhookUrl.isEmpty();
-<<<<<<< HEAD
-        boolean aiConfigured = aiManager != null && aiManager.isConfigured();
-=======
->>>>>>> d4ee759ab3c9a98c8bcb8a5702b71014977acb6a
 
         getLogger().info("╔════════════════════════════════════════╗");
         getLogger().info("║                                        ║");
@@ -107,12 +88,7 @@ public class OceanPlugin extends JavaPlugin {
         getLogger().info("║  📋 CONFIGURATION STATUS               ║");
         getLogger().info("║  ├─ Freeze Mode: " + String.format("%-20s", freezeMode) + " ║");
         getLogger().info("║  ├─ Ocean API: " + String.format("%-15s", apiConfigured ? "✓ Configured" : "✗ Not Set") + " ║");
-<<<<<<< HEAD
-        getLogger().info("║  ├─ Discord Webhook: " + String.format("%-13s", webhookConfigured ? "✓ Configured" : "✗ Not Set") + " ║");
-        getLogger().info("║  └─ AI Assistant: " + String.format("%-16s", aiConfigured ? "✓ Configured" : "✗ Not Set") + " ║");
-=======
         getLogger().info("║  └─ Discord Webhook:  " + String.format("%-15s", webhookConfigured ? "✓ Configured" : "✗ Not Set") + " ║");
->>>>>>> d4ee759ab3c9a98c8bcb8a5702b71014977acb6a
         getLogger().info("╠════════════════════════════════════════╣");
         getLogger().info("║  🚀 Plugin successfully initialized!   ║");
         getLogger().info("╚════════════════════════════════════════╝");
@@ -143,17 +119,6 @@ public class OceanPlugin extends JavaPlugin {
         return userLookupAPI;
     }
 
-<<<<<<< HEAD
-    public DatabaseAPI getDatabaseAPI() {
-        return databaseAPI;
-    }
-
-    public AIManager getAIManager() {
-        return aiManager;
-    }
-
-=======
->>>>>>> d4ee759ab3c9a98c8bcb8a5702b71014977acb6a
     public WebhookManager getWebhookManager() {
         return webhookManager;
     }
