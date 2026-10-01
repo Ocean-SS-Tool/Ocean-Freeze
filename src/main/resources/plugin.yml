@@ -19,6 +19,9 @@ commands:
       /<command> scan <player> - Generate scan PIN and send instructions
       /<command> lookup <discordId> - View user's scan history
       /<command> riskscore <discordId> - Check user's risk analysis
+      /<command> db <discordId> - Query Cheater Database
+      /<command> ai <player|pin|discordId> - AI forensic verdict & analysis
+      /<command> ask <question> - Ask Ocean AI assistant
       /<command> config - Open configuration GUI
       /<command> mode <auto|manual> - Change freeze mode
       /<command> reload - Reload plugin configuration

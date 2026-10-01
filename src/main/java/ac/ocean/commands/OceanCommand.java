@@ -43,6 +43,10 @@ public class OceanCommand implements CommandExecutor, TabCompleter {
             case "scan":
             case "lookup":
             case "riskscore":
+            case "db":
+            case "database":
+            case "ai":
+            case "ask":
                 if (!sender.hasPermission("ocean.staff")) {
                     sender.sendMessage(colorize(msg.getMessage("no-permission",
                             "&cYou don't have permission to use this command!")));
@@ -50,7 +54,10 @@ public class OceanCommand implements CommandExecutor, TabCompleter {
                 }
                 if (subCommand.equals("scan")) handleScan(sender, args);
                 else if (subCommand.equals("lookup")) handleLookup(sender, args);
-                else handleRiskScore(sender, args);
+                else if (subCommand.equals("riskscore")) handleRiskScore(sender, args);
+                else if (subCommand.equals("db") || subCommand.equals("database")) handleDatabase(sender, args);
+                else if (subCommand.equals("ai")) handleAI(sender, args);
+                else handleAsk(sender, args);
                 break;
 
             case "config":
@@ -162,6 +169,119 @@ public class OceanCommand implements CommandExecutor, TabCompleter {
         plugin.getUserLookupAPI().getRiskScore(sender, discordId);
     }
 
+    private void handleDatabase(CommandSender sender, String[] args) {
+        MessageManager msg = plugin.getMessageManager();
+
+        if (args.length < 2) {
+            sender.sendMessage(colorize(msg.getMessage("usage-database",
+                    "&cUsage: /ocean db <discordId>")));
+            return;
+        }
+
+        String discordId = args[1];
+
+        sender.sendMessage(colorize(msg.getMessage("retrieving-database",
+                "&eSearching Cheater Database for Discord ID: &f%discordid%")
+                .replace("%discordid%", discordId)));
+        plugin.getDatabaseAPI().queryUser(sender, discordId);
+    }
+
+    private void handleAI(CommandSender sender, String[] args) {
+        MessageManager msg = plugin.getMessageManager();
+
+        if (args.length < 2) {
+            sender.sendMessage(colorize(msg.getMessage("usage-ai",
+                    "&cUsage: /ocean ai <player | pin | discordId>")));
+            return;
+        }
+
+        String target = args[1];
+
+        Player onlinePlayer = Bukkit.getPlayer(target);
+        if (onlinePlayer != null && onlinePlayer.isOnline()) {
+            boolean frozen = plugin.getFreezeManager().isFrozen(onlinePlayer);
+            String pin = null;
+            if (frozen && plugin.getFreezeManager().getFrozenPlayer(onlinePlayer.getUniqueId()) != null) {
+                pin = plugin.getFreezeManager().getFrozenPlayer(onlinePlayer.getUniqueId()).getScanPin();
+            }
+
+            if (pin != null && !pin.isEmpty()) {
+                fetchAndAnalyzePin(sender, pin, onlinePlayer.getName());
+                return;
+            } else {
+                sender.sendMessage(colorize("&7[AI] &ePlayer &f" + onlinePlayer.getName() + " &ehas no active scan PIN. Consulting AI on player..."));
+                plugin.getAIManager().ask(sender, "Provide an anti-cheat review and recommendation for player " + onlinePlayer.getName() + " (currently frozen: " + frozen + ")");
+                return;
+            }
+        }
+
+        if (target.matches("^\\d{5,25}$")) {
+            plugin.getAIManager().analyzeDiscordId(sender, target);
+            return;
+        }
+
+        String cleanPin = target.replaceAll("[^a-zA-Z0-9]", "");
+        fetchAndAnalyzePin(sender, cleanPin, cleanPin);
+    }
+
+    private void fetchAndAnalyzePin(CommandSender sender, String pin, String playerName) {
+        String apiKey = plugin.getConfig().getString("anticheat.api-key");
+        if (apiKey == null || apiKey.isEmpty() || apiKey.equals("YOUR_API_KEY_HERE")) {
+            sender.sendMessage(colorize(plugin.getMessageManager().getMessage("api-key-not-configured",
+                    "&c✗ AntiCheat.ac API key is not configured!")));
+            return;
+        }
+
+        sender.sendMessage(colorize("&7[AI] &eRetrieving scan results for PIN &f" + pin + "&e..."));
+
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            try {
+                java.net.URL url = new java.net.URL("https://api.anticheat.ac/v1/pins/" + pin + "/results");
+                java.net.HttpURLConnection conn = (java.net.HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+                conn.setRequestProperty("x-api-key", apiKey);
+                conn.setRequestProperty("Accept", "application/json");
+                conn.setConnectTimeout(10000);
+                conn.setReadTimeout(10000);
+
+                int respCode = conn.getResponseCode();
+                if (respCode == 200) {
+                    java.io.BufferedReader br = new java.io.BufferedReader(new java.io.InputStreamReader(conn.getInputStream(), java.nio.charset.StandardCharsets.UTF_8));
+                    StringBuilder sb = new StringBuilder();
+                    String line;
+                    while ((line = br.readLine()) != null) sb.append(line);
+                    br.close();
+
+                    com.google.gson.JsonObject results = new com.google.gson.Gson().fromJson(sb.toString(), com.google.gson.JsonObject.class);
+                    plugin.getAIManager().analyzeScan(sender, pin, playerName, results);
+                } else {
+                    final int code = respCode;
+                    Bukkit.getScheduler().runTask(plugin, () -> sender.sendMessage(colorize("&cFailed to retrieve scan results for PIN " + pin + " (HTTP " + code + ")")));
+                }
+                conn.disconnect();
+            } catch (Exception e) {
+                Bukkit.getScheduler().runTask(plugin, () -> sender.sendMessage(colorize("&cError fetching PIN results: " + e.getMessage())));
+            }
+        });
+    }
+
+    private void handleAsk(CommandSender sender, String[] args) {
+        MessageManager msg = plugin.getMessageManager();
+
+        if (args.length < 2) {
+            sender.sendMessage(colorize(msg.getMessage("usage-ask",
+                    "&cUsage: /ocean ask <your question or investigation prompt>")));
+            return;
+        }
+
+        StringBuilder question = new StringBuilder();
+        for (int i = 1; i < args.length; i++) {
+            question.append(args[i]).append(" ");
+        }
+
+        plugin.getAIManager().ask(sender, question.toString().trim());
+    }
+
     private void handleConfig(CommandSender sender) {
         if (!(sender instanceof Player)) {
             sender.sendMessage(colorize(plugin.getMessageManager().getMessage("only-players",
@@ -224,6 +344,9 @@ public class OceanCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(colorize(msg.getMessage("help-scan", "&e/ocean scan <player> &7- Start screenshare scan")));
         sender.sendMessage(colorize(msg.getMessage("help-lookup", "&e/ocean lookup <discordId> &7- View user scan history")));
         sender.sendMessage(colorize(msg.getMessage("help-riskscore", "&e/ocean riskscore <discordId> &7- Check user risk analysis")));
+        sender.sendMessage(colorize(msg.getMessage("help-database", "&e/ocean db <discordId> &7- Query Cheater Database")));
+        sender.sendMessage(colorize(msg.getMessage("help-ai", "&e/ocean ai <player|pin|discordId> &7- AI screenshare verdict & analysis")));
+        sender.sendMessage(colorize(msg.getMessage("help-ask", "&e/ocean ask <question> &7- Ask Ocean AI assistant")));
         sender.sendMessage(colorize(msg.getMessage("help-config", "&e/ocean config &7- Open configuration GUI")));
         sender.sendMessage(colorize(msg.getMessage("help-mode", "&e/ocean mode [AUTO|MANUAL] &7- Change freeze mode")));
         sender.sendMessage(colorize(msg.getMessage("help-reload", "&e/ocean reload &7- Reload configuration")));
@@ -241,7 +364,7 @@ public class OceanCommand implements CommandExecutor, TabCompleter {
 
         if (args.length == 1) {
             if (sender.hasPermission("ocean.staff")) {
-                completions.addAll(Arrays.asList("scan", "lookup", "riskscore"));
+                completions.addAll(Arrays.asList("scan", "lookup", "riskscore", "db", "database", "ai", "ask"));
             }
             if (sender.hasPermission("ocean.admin")) {
                 completions.addAll(Arrays.asList("config", "mode", "reload"));
@@ -253,6 +376,10 @@ public class OceanCommand implements CommandExecutor, TabCompleter {
                     if (plugin.getFreezeManager().isFrozen(player)) {
                         completions.add(player.getName());
                     }
+                }
+            } else if (args[0].equalsIgnoreCase("ai") && sender.hasPermission("ocean.staff")) {
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    completions.add(player.getName());
                 }
             } else if (args[0].equalsIgnoreCase("mode") && sender.hasPermission("ocean.admin")) {
                 completions.addAll(Arrays.asList("AUTO", "MANUAL"));
