@@ -62,37 +62,43 @@ public class DatabaseAPI {
                 int responseCode = conn.getResponseCode();
                 plugin.getLogger().info("[API] Response: " + responseCode + " from GET " + fullUrl);
 
-                if (responseCode == 200) {
-                    BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
-                    StringBuilder response = new StringBuilder();
-                    String line;
-                    while ((line = br.readLine()) != null) {
-                        response.append(line);
-                    }
-                    br.close();
+                switch (responseCode) {
+                    case 200:
+                        BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
+                        StringBuilder response = new StringBuilder();
+                        String line;
+                        while ((line = br.readLine()) != null) {
+                            response.append(line);
+                        }
+                        br.close();
 
-                    JsonObject data = gson.fromJson(response.toString(), JsonObject.class);
+                        JsonObject data = gson.fromJson(response.toString(), JsonObject.class);
 
-                    Bukkit.getScheduler().runTask(plugin, () -> displayDatabaseQuery(sender, data, discordId));
+                        Bukkit.getScheduler().runTask(plugin, () -> displayDatabaseQuery(sender, data, discordId));
+                        break;
+                    case 400:
+                        Bukkit.getScheduler().runTask(plugin, () -> sender.sendMessage(colorize(plugin.getMessageManager().getMessage("db-invalid-discord-id",
+                                "&c✗ Invalid Discord ID! It must be between 5 and 25 digits."))));
+                        break;
+                    case 401:
+                        Bukkit.getScheduler().runTask(plugin, () -> sender.sendMessage(colorize(plugin.getMessageManager().getMessage("db-unauthorized",
+                                "&c✗ API key is missing, invalid, or expired!"))));
+                        break;
+                    case 403:
+                        Bukkit.getScheduler().runTask(plugin, () -> sender.sendMessage(colorize(plugin.getMessageManager().getMessage("db-forbidden",
+                                "&c✗ Access denied: API key lacks db:query permission or account does not have DB Access."))));
+                        break;
+                    case 429:
+                        Bukkit.getScheduler().runTask(plugin, () -> sender.sendMessage(colorize(plugin.getMessageManager().getMessage("db-rate-limited",
+                                "&c✗ Rate limit exceeded! Please slow down."))));
+                        break;
+                    default:
+                        String errorBody = readErrorStream(conn);
+                        logApiError("GET", fullUrl, responseCode, errorBody);
 
-                } else if (responseCode == 400) {
-                    Bukkit.getScheduler().runTask(plugin, () -> sender.sendMessage(colorize(plugin.getMessageManager().getMessage("db-invalid-discord-id",
-                            "&c✗ Invalid Discord ID! It must be between 5 and 25 digits."))));
-                } else if (responseCode == 401) {
-                    Bukkit.getScheduler().runTask(plugin, () -> sender.sendMessage(colorize(plugin.getMessageManager().getMessage("db-unauthorized",
-                            "&c✗ API key is missing, invalid, or expired!"))));
-                } else if (responseCode == 403) {
-                    Bukkit.getScheduler().runTask(plugin, () -> sender.sendMessage(colorize(plugin.getMessageManager().getMessage("db-forbidden",
-                            "&c✗ Access denied: API key lacks db:query permission or account does not have DB Access."))));
-                } else if (responseCode == 429) {
-                    Bukkit.getScheduler().runTask(plugin, () -> sender.sendMessage(colorize(plugin.getMessageManager().getMessage("db-rate-limited",
-                            "&c✗ Rate limit exceeded! Please slow down."))));
-                } else {
-                    String errorBody = readErrorStream(conn);
-                    logApiError("GET", fullUrl, responseCode, errorBody);
-
-                    Bukkit.getScheduler().runTask(plugin, () -> sender.sendMessage(colorize(plugin.getMessageManager().getMessage("api-error",
-                            "&cAPI Error: %error%").replace("%error%", String.valueOf(responseCode)))));
+                        Bukkit.getScheduler().runTask(plugin, () -> sender.sendMessage(colorize(plugin.getMessageManager().getMessage("api-error",
+                                "&cAPI Error: %error%").replace("%error%", String.valueOf(responseCode)))));
+                        break;
                 }
 
                 conn.disconnect();

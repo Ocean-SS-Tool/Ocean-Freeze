@@ -15,7 +15,6 @@ public class MessageManager {
 
     private final OceanPlugin plugin;
     private FileConfiguration messagesConfig;
-    private File messagesFile;
 
     public MessageManager(OceanPlugin plugin) {
         this.plugin = plugin;
@@ -23,7 +22,7 @@ public class MessageManager {
     }
 
     public void loadMessages() {
-        messagesFile = new File(plugin.getDataFolder(), "messages.yml");
+        File messagesFile = new File(plugin.getDataFolder(), "messages.yml");
 
         if (!messagesFile.exists()) {
             plugin.saveResource("messages.yml", false);

@@ -227,7 +227,7 @@ public class AIManager {
 
                 JsonObject userMsg = new JsonObject();
                 userMsg.addProperty("role", "user");
-                userMsg.addProperty("content", "Please analyze this scan:\n" + fullContext.toString());
+                userMsg.addProperty("content", "Please analyze this scan:\n" + fullContext);
                 messages.add(userMsg);
 
                 sendChatCompletion(messages, new AICallback() {
@@ -696,12 +696,12 @@ public class AIManager {
                               .replaceAll("(?is)<svg.*?</svg>", " ")
                               .replaceAll("(?is)<noscript.*?</noscript>", " ")
                               .replaceAll("<[^>]+>", " ")
-                              .replaceAll("&nbsp;", " ")
-                              .replaceAll("&amp;", "&")
-                              .replaceAll("&quot;", "\"")
-                              .replaceAll("&apos;", "'")
-                              .replaceAll("&lt;", "<")
-                              .replaceAll("&gt;", ">");
+                              .replace("&nbsp;", " ")
+                              .replace("&amp;", "&")
+                              .replace("&quot;", "\"")
+                              .replace("&apos;", "'")
+                              .replace("&lt;", "<")
+                              .replace("&gt;", ">");
 
         stripped = stripped.replaceAll("\\s+", " ").trim();
 

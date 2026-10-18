@@ -1,5 +1,7 @@
 package ac.ocean;
 
+import lombok.AccessLevel;
+import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 import ac.ocean.commands.FreezeCommand;
 import ac.ocean.commands.OceanCommand;
@@ -14,18 +16,30 @@ import ac.ocean.gui.ConfigGUI;
 import ac.ocean.gui.FreezeGUI;
 import ac.ocean.manager.MessageManager;
 
+@Getter
 public class OceanPlugin extends JavaPlugin {
 
+    @Getter
     private static OceanPlugin instance;
     private FreezeManager freezeManager;
     private MessageManager messageManager;
     private AntiCheatAPI antiCheatAPI;
     private UserLookupAPI userLookupAPI;
     private DatabaseAPI databaseAPI;
+    @Getter(AccessLevel.NONE)
     private AIManager aiManager;
     private WebhookManager webhookManager;
     private FreezeListener freezeListener;
     private FreezeGUI freezeGUI;
+
+    @Deprecated
+    public AIManager getAIManager() {
+        return aiManager;
+    }
+
+    public AIManager getAiManager() {
+        return aiManager;
+    }
 
     @Override
     public void onEnable() {
@@ -104,44 +118,5 @@ public class OceanPlugin extends JavaPlugin {
             getLogger().warning("⚠ Ocean API key not configured!");
             getLogger().warning("⚠ Set 'anticheat.api-key' in config.yml");
         }
-    }
-
-    public static OceanPlugin getInstance() {
-        return instance;
-    }
-
-    public MessageManager getMessageManager() {
-        return messageManager;
-    }
-
-    public FreezeManager getFreezeManager() {
-        return freezeManager;
-    }
-
-    public AntiCheatAPI getAntiCheatAPI() {
-        return antiCheatAPI;
-    }
-
-    public UserLookupAPI getUserLookupAPI() {
-        return userLookupAPI;
-    }
-
-    public DatabaseAPI getDatabaseAPI() {
-        return databaseAPI;
-    }
-
-    public AIManager getAIManager() {
-        return aiManager;
-    }
-    public WebhookManager getWebhookManager() {
-        return webhookManager;
-    }
-
-    public FreezeListener getFreezeListener() {
-        return freezeListener;
-    }
-
-    public FreezeGUI getFreezeGUI() {
-        return freezeGUI;
     }
 }

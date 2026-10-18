@@ -52,12 +52,27 @@ public class OceanCommand implements CommandExecutor, TabCompleter {
                             "&cYou don't have permission to use this command!")));
                     return true;
                 }
-                if (subCommand.equals("scan")) handleScan(sender, args);
-                else if (subCommand.equals("lookup")) handleLookup(sender, args);
-                else if (subCommand.equals("riskscore")) handleRiskScore(sender, args);
-                else if (subCommand.equals("db") || subCommand.equals("database")) handleDatabase(sender, args);
-                else if (subCommand.equals("ai")) handleAI(sender, args);
-                else handleAsk(sender, args);
+                switch (subCommand) {
+                    case "scan":
+                        handleScan(sender, args);
+                        break;
+                    case "lookup":
+                        handleLookup(sender, args);
+                        break;
+                    case "riskscore":
+                        handleRiskScore(sender, args);
+                        break;
+                    case "db":
+                    case "database":
+                        handleDatabase(sender, args);
+                        break;
+                    case "ai":
+                        handleAI(sender, args);
+                        break;
+                    default:
+                        handleAsk(sender, args);
+                        break;
+                }
                 break;
 
             case "config":
@@ -207,16 +222,15 @@ public class OceanCommand implements CommandExecutor, TabCompleter {
 
             if (pin != null && !pin.isEmpty()) {
                 fetchAndAnalyzePin(sender, pin, onlinePlayer.getName());
-                return;
             } else {
                 sender.sendMessage(colorize("&7[AI] &ePlayer &f" + onlinePlayer.getName() + " &ehas no active scan PIN. Consulting AI on player..."));
-                plugin.getAIManager().ask(sender, "Provide an anti-cheat review and recommendation for player " + onlinePlayer.getName() + " (currently frozen: " + frozen + ")");
-                return;
+                plugin.getAiManager().ask(sender, "Provide an anti-cheat review and recommendation for player " + onlinePlayer.getName() + " (currently frozen: " + frozen + ")");
             }
+            return;
         }
 
         if (target.matches("^\\d{5,25}$")) {
-            plugin.getAIManager().analyzeDiscordId(sender, target);
+            plugin.getAiManager().analyzeDiscordId(sender, target);
             return;
         }
 
@@ -253,7 +267,7 @@ public class OceanCommand implements CommandExecutor, TabCompleter {
                     br.close();
 
                     com.google.gson.JsonObject results = new com.google.gson.Gson().fromJson(sb.toString(), com.google.gson.JsonObject.class);
-                    plugin.getAIManager().analyzeScan(sender, pin, playerName, results);
+                    plugin.getAiManager().analyzeScan(sender, pin, playerName, results);
                 } else {
                     final int code = respCode;
                     Bukkit.getScheduler().runTask(plugin, () -> sender.sendMessage(colorize("&cFailed to retrieve scan results for PIN " + pin + " (HTTP " + code + ")")));
@@ -279,7 +293,7 @@ public class OceanCommand implements CommandExecutor, TabCompleter {
             question.append(args[i]).append(" ");
         }
 
-        plugin.getAIManager().ask(sender, question.toString().trim());
+        plugin.getAiManager().ask(sender, question.toString().trim());
     }
 
     private void handleConfig(CommandSender sender) {
