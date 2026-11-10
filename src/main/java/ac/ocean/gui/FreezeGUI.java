@@ -20,18 +20,19 @@ import java.util.*;
 public class FreezeGUI implements Listener {
 
     private final OceanPlugin plugin;
-    public static final String GUI_TITLE = "\u00a7c\u00a7lFreeze Response";
 
     private final Set<UUID> suppressReopen = new HashSet<>();
     private final Set<UUID> processing = new HashSet<>();
 
-    public FreezeGUI(OceanPlugin plugin) {
+    public static final String GUI_TITLE = "§c§lFreeze Response";
+
+    public FreezeGUI(final OceanPlugin plugin) {
         this.plugin = plugin;
     }
 
     public void open(Player player) {
         MessageManager msg = plugin.getMessageManager();
-        Inventory gui = Bukkit.createInventory(null, 27, GUI_TITLE);
+        Inventory gui = Bukkit.createInventory(null, 27, FreezeGUI.GUI_TITLE);
 
         ItemStack filler = createFiller();
         for (int i = 0; i < 27; i++) {
@@ -84,6 +85,11 @@ public class FreezeGUI implements Listener {
         }
 
         event.setCancelled(true);
+
+        final int rawSlot = event.getRawSlot();
+        if (rawSlot < 0 || rawSlot >= event.getView().getTopInventory().getSize()) {
+            return; // To ensure that it only reacts to clicks inside the Freeze GUI
+        }
 
         Player player = (Player) event.getWhoClicked();
         UUID uuid = player.getUniqueId();
@@ -254,7 +260,7 @@ public class FreezeGUI implements Listener {
     }
 
     private String colorize(String message) {
-        return message.replace("&", "\u00a7");
+        return message.replace("&", "§");
     }
 
     private List<String> colorizeList(List<String> list) {

@@ -18,9 +18,10 @@ import java.util.Arrays;
 public class ConfigGUI implements Listener {
 
     private final OceanPlugin plugin;
+
     private static final String GUI_TITLE = "§e§lOcean Configuration";
 
-    public ConfigGUI(OceanPlugin plugin) {
+    public ConfigGUI(final OceanPlugin plugin) {
         this.plugin = plugin;
     }
 
@@ -161,6 +162,11 @@ public class ConfigGUI implements Listener {
         }
 
         event.setCancelled(true);
+
+        final int rawSlot = event.getRawSlot();
+        if (rawSlot < 0 || rawSlot >= event.getView().getTopInventory().getSize()) {
+            return; // To ensure that it only reacts to clicks inside the Config GUI
+        }
 
         ItemStack clicked = event.getCurrentItem();
 
