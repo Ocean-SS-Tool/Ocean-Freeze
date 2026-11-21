@@ -28,6 +28,11 @@ public class FreezeManager {
             return;
         }
 
+        // PlayerMoveEvent does not fire for vehicle movement, players riding a horse/boat/minecart would be still able to move
+        if (player.isInsideVehicle()) {
+            player.leaveVehicle();
+        }
+
         Location freezeLocation = player.getLocation();
         GameMode originalGameMode = player.getGameMode();
 
@@ -145,6 +150,11 @@ public class FreezeManager {
         player.setAllowFlight(false);
 
         applyFreezeEffects(player);
+
+        // PlayerMoveEvent does not fire for vehicle movement, players riding a horse/boat/minecart would be still able to move
+        if (player.isInsideVehicle()) {
+            player.leaveVehicle();
+        }
 
         player.teleport(frozenPlayer.getFreezeLocation());
 

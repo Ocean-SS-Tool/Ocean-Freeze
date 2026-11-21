@@ -16,6 +16,7 @@ import org.bukkit.event.player.*;
 import ac.ocean.OceanPlugin;
 import ac.ocean.gui.FreezeGUI;
 import ac.ocean.utils.ClickableMessage;
+import org.bukkit.event.vehicle.VehicleEnterEvent;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -69,6 +70,16 @@ public class FreezeListener implements Listener {
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         if (plugin.getFreezeManager().isFrozen(event.getPlayer())) {
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onVehicleEnter(final VehicleEnterEvent event) {
+        if (event.getEntered() instanceof Player) {
+            final Player player = (Player) event.getEntered();
+            if (plugin.getFreezeManager().isFrozen(player)) {
+                event.setCancelled(true);
+            }
         }
     }
 
